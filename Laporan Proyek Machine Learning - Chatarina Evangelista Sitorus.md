@@ -70,24 +70,25 @@ Artinya terdapat **3000 baris** (pasien) dan **16 kolom**, termasuk variabel tar
 
 ### Deskripsi Fitur
 
-| Fitur | Deskripsi |
-|-------|-----------|
-| `GENDER` | Jenis kelamin pasien (`M` = Laki-laki, `F` = Perempuan) |
-| `AGE` | Usia pasien (numerik) |
-| `SMOKING` | Riwayat merokok (`1` = Tidak, `2` = Ya) |
-| `YELLOW_FINGERS` | Ada/tidaknya jari menguning akibat nikotin |
-| `ANXIETY` | Gangguan kecemasan |
-| `PEER_PRESSURE` | Terpengaruh tekanan sosial |
-| `CHRONIC_DISEASE` | Riwayat penyakit kronis |
-| `FATIGUE` | Kelelahan kronis |
-| `ALLERGY` | Riwayat alergi |
-| `WHEEZING` | Napas berbunyi |
-| `ALCOHOL_CONSUMING` | Konsumsi alkohol |
-| `COUGHING` | Batuk kronis |
-| `SHORTNESS_OF_BREATH` | Sesak napas |
-| `SWALLOWING_DIFFICULTY` | Sulit menelan |
-| `CHEST_PAIN` | Nyeri dada |
-| `LUNG_CANCER` | Target klasifikasi (`YES` = Kanker, `NO` = Tidak) |
+| **Fitur**               | **Deskripsi**                                      |
+|-------------------------|----------------------------------------------------|
+| `GENDER`                | Jenis kelamin pasien (M = Male, F = Female)        |
+| `AGE`                   | Usia pasien dalam satuan tahun                     |
+| `SMOKING`               | Status merokok (1 = Tidak, 2 = Ya)                 |
+| `YELLOW_FINGERS`        | Ada/tidaknya noda kuning pada jari karena nikotin  |
+| `ANXIETY`               | Riwayat gangguan kecemasan                         |
+| `PEER_PRESSURE`         | Terpengaruh tekanan sosial dari lingkungan         |
+| `CHRONIC_DISEASE`       | Memiliki penyakit kronis atau komorbiditas         |
+| `FATIGUE`               | Mengalami kelelahan berkepanjangan                 |
+| `ALLERGY`               | Riwayat alergi terhadap zat atau lingkungan tertentu |
+| `WHEEZING`              | Napas berbunyi/mengi                               |
+| `ALCOHOL_CONSUMING`     | Kebiasaan mengonsumsi alkohol                      |
+| `COUGHING`              | Batuk kronis atau terus-menerus                    |
+| `SHORTNESS_OF_BREATH`   | Sesak napas atau kesulitan bernapas                |
+| `SWALLOWING_DIFFICULTY` | Sulit menelan makanan atau minuman                 |
+| `CHEST_PAIN`            | Nyeri di bagian dada                              |
+| `LUNG_CANCER`           | Target klasifikasi (YES = Kanker, NO = Tidak)      |
+
 
 ### Eksplorasi Data
 
@@ -102,7 +103,50 @@ df_lung.duplicated().sum()
 
 Hasil menunjukkan tidak ada nilai kosong dan hanya terdapat **2 data duplikat** yang dapat dihapus.
 
-#### 2. Distribusi Data
+#### 2. Pemeriksaan Struktur dan Tipe Data
+Struktur data diperiksa menggunakan fungsi df.info() untuk melihat jumlah kolom, jumlah nilai non-null, serta tipe data masing-masing fitur.
+
+```python
+df_lung.info()
+```
+Hasil pemeriksaan menunjukkan:
+  - Dataset terdiri dari 16 kolom, yaitu 14 kolom bertipe int64 dan 2 kolom bertipe object.
+  - Kolom AGE merupakan data numerik kontinu.
+  - Kolom-kolom seperti SMOKING, ANXIETY, COUGHING, dll. bertipe numerik diskrit (integer), dengan nilai 1 dan 2.
+  - Kolom GENDER dan LUNG_CANCER bertipe kategorikal dengan nilai string (object).
+  - Tidak ditemukan missing value pada dataset ini.
+
+#### 3. Pemeriksaan Nilai Kosong (Missing Value)
+
+Untuk memastikan bahwa dataset tidak memiliki nilai kosong (null) yang dapat menyebabkan error pada saat pelatihan model, dilakukan pengecekan sebagai berikut:
+
+```python
+print("Nilai null per kolom:")
+print(df_lung.isna().sum())
+```
+```python
+Output:
+
+GENDER                   0
+AGE                      0
+SMOKING                  0
+YELLOW_FINGERS           0
+ANXIETY                  0
+PEER_PRESSURE            0
+CHRONIC_DISEASE          0
+FATIGUE                  0
+ALLERGY                  0
+WHEEZING                 0
+ALCOHOL_CONSUMING        0
+COUGHING                 0
+SHORTNESS_OF_BREATH      0
+SWALLOWING_DIFFICULTY    0
+CHEST_PAIN               0
+LUNG_CANCER              0
+```
+Hasil menunjukkan bahwa tidak ada nilai kosong pada seluruh kolom dataset.
+
+#### 4. Distribusi Data
 
 ##### Visualisasi Korelasi Awal
 
@@ -139,18 +183,6 @@ sns.histplot(data=df_lung, x="AGE", kde=True)
 ![Distribusi Usia](assets/eda/histplot.png)
 
 ---
-
-Paragraf awal bagian ini menjelaskan informasi mengenai data yang Anda gunakan dalam proyek. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
-
-Selanjutnya uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
-
-### Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
-- accepts : merupakan jenis pembayaran yang diterima pada restoran tertentu.
-- cuisine : merupakan jenis masakan yang disajikan pada restoran.
-- dst
-
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data atau exploratory data analysis.
 
 ## Data Preparation
 
@@ -208,12 +240,20 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 Karena AGE adalah satu-satunya fitur numerik kontinu, maka dilakukan standarisasi menggunakan StandardScaler agar skala nilainya setara dengan fitur lain (yang berupa biner 0/1).
 
+Proses Standarisasi:
 ```python
 scaler = StandardScaler()
 X_train["AGE"] = scaler.fit_transform(X_train[["AGE"]])
 X_test["AGE"] = scaler.transform(X_test[["AGE"]])
-
 ```
+Statistik Fitur AGE Sebelum dan Sesudah Standarisasi
+
+| Kondisi                 | Mean     | Std Dev   |
+|-------------------------|----------|-----------|
+| Sebelum Standarisasi    | 55.2143  | 14.7082   |
+| Sesudah Standarisasi    | 0.0000   | 1.0002    |
+
+
 ### 6. Visualisasi Setelah Preprocessing
 * Heatmap Korelasi (Setelah Preprocessing)
 ```python
@@ -342,7 +382,7 @@ Meskipun Logistic Regression unggul dari segi interpretasi dan efisiensi komputa
 - Lebih akurat dalam menangani data dengan hubungan fitur yang kompleks.
 - Mampu mengurangi risiko overfitting.
 - Mampu bekerja optimal tanpa banyak preprocessing atau asumsi data linier.
-- 
+
 ---
 
 ## Evaluation
