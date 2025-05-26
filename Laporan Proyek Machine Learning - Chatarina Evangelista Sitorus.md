@@ -49,6 +49,96 @@ Evaluasi kinerja model dilakukan dengan menggunakan metrik klasifikasi yang rele
 
 
 ## Data Understanding
+
+Dataset yang digunakan dalam proyek ini berjudul **Lung Cancer Dataset** dan tersedia secara publik melalui platform Kaggle ([Lung Cancer Dataset](https://www.kaggle.com/datasets/akashnath29/lung-cancer-dataset)). Dataset ini terdiri dari **3000 entri pasien** dengan **15 fitur input** dan **1 kolom target** (`LUNG_CANCER`). Data bersifat **non-citra**, yaitu berdasarkan survei atau wawancara medis, sehingga cocok untuk diterapkan dalam sistem skrining awal berbasis data klinis.
+
+### Struktur Dataset
+
+Dataset dimuat menggunakan `pandas.read_csv()` dan memiliki struktur sebagai berikut:
+
+```python
+df_lung.shape
+```
+
+Output:
+```
+(3000, 16)
+```
+
+Artinya terdapat **3000 baris** (pasien) dan **16 kolom**, termasuk variabel target.
+
+### Deskripsi Fitur
+
+| Fitur | Deskripsi |
+|-------|-----------|
+| `GENDER` | Jenis kelamin pasien (`M` = Laki-laki, `F` = Perempuan) |
+| `AGE` | Usia pasien (numerik) |
+| `SMOKING` | Riwayat merokok (`1` = Tidak, `2` = Ya) |
+| `YELLOW_FINGERS` | Ada/tidaknya jari menguning akibat nikotin |
+| `ANXIETY` | Gangguan kecemasan |
+| `PEER_PRESSURE` | Terpengaruh tekanan sosial |
+| `CHRONIC_DISEASE` | Riwayat penyakit kronis |
+| `FATIGUE` | Kelelahan kronis |
+| `ALLERGY` | Riwayat alergi |
+| `WHEEZING` | Napas berbunyi |
+| `ALCOHOL_CONSUMING` | Konsumsi alkohol |
+| `COUGHING` | Batuk kronis |
+| `SHORTNESS_OF_BREATH` | Sesak napas |
+| `SWALLOWING_DIFFICULTY` | Sulit menelan |
+| `CHEST_PAIN` | Nyeri dada |
+| `LUNG_CANCER` | Target klasifikasi (`YES` = Kanker, `NO` = Tidak) |
+
+### Eksplorasi Data
+
+Beberapa tahapan awal eksplorasi data dilakukan untuk memahami karakteristik dataset:
+
+#### 1. Pemeriksaan Unik dan Duplikasi
+
+```python
+df_lung.nunique()
+df_lung.duplicated().sum()
+```
+
+Hasil menunjukkan tidak ada nilai kosong dan hanya terdapat **2 data duplikat** yang dapat dihapus.
+
+#### 2. Distribusi Data
+
+##### Visualisasi Korelasi Awal
+
+```python
+sns.heatmap(df_lung.corr(numeric_only=True), annot=True)
+```
+
+![Heatmap Awal](assets/eda/heatmap.png)
+
+##### Deteksi Outlier dengan Boxplot (AGE)
+
+```python
+sns.boxplot(x=df_lung["AGE"])
+```
+
+![Boxplot AGE](assets/eda/boxplot.png)
+
+##### Distribusi Gender dan Label
+
+```python
+sns.countplot(x="GENDER", data=df_lung)
+sns.countplot(x="LUNG_CANCER", data=df_lung)
+```
+
+![Distribusi Gender dan Status Kanker](assets/eda/countplot.png)
+
+
+##### Distribusi Usia Pasien
+
+```python
+sns.histplot(data=df_lung, x="AGE", kde=True)
+```
+
+![Distribusi Usia](assets/eda/histplot.png)
+
+---
+
 Paragraf awal bagian ini menjelaskan informasi mengenai data yang Anda gunakan dalam proyek. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
 
 Selanjutnya uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
