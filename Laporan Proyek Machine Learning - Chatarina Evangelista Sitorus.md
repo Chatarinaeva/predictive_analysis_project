@@ -235,7 +235,8 @@ sns.countplot(x="LUNG_CANCER", data=df_processed)
 
 ```
 
-![Countplot Akhir](assets/preprocessing/countplot.png)  
+![Countplot Akhir](assets/preprocessing/countplot1.png)  
+![Countplot Akhir](assets/preprocessing/countplot2.png) 
 
 * Distribusi AGE Setelah Standarisasi
 
@@ -266,6 +267,98 @@ Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dil
 - Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
 
 ## Modeling
+
+Tahapan ini membahas pemilihan dan penerapan model machine learning untuk klasifikasi status kanker paru-paru berdasarkan data klinis yang telah diproses sebelumnya. Dua algoritma klasifikasi digunakan untuk dibandingkan performanya: **Logistic Regression** dan **Random Forest Classifier**.
+
+### 1. Pemilihan Model
+
+Dua model dipilih berdasarkan karakteristik data dan kebutuhan proyek:
+
+* **Logistic Regression**
+
+  * Digunakan sebagai baseline model.
+  * Sifatnya sederhana, cepat, dan mudah diinterpretasikan.
+  * Cocok digunakan ketika hubungan antar fitur dan target bersifat linier.
+
+* **Random Forest Classifier**
+
+  * Algoritma ansambel berbasis pohon keputusan.
+  * Dapat menangkap hubungan non-linear antar fitur.
+  * Lebih kuat terhadap overfitting dan bekerja baik pada data biner.
+
+Tujuan dari penggunaan dua model ini adalah untuk membandingkan trade-off antara **kecepatan, interpretabilitas, dan akurasi**.
+
+### 2. Implementasi Model dan Parameter
+
+#### Model 1: Logistic Regression
+
+Model ini dipilih sebagai baseline karena:
+
+- Cocok untuk klasifikasi biner.
+- Cepat dilatih dan efisien secara komputasi.
+- Memiliki interpretabilitas tinggi.
+
+**Parameter yang digunakan:**
+
+- `max_iter = 10000`: Untuk memastikan konvergensi saat proses training.
+- `random_state = 42`: Agar hasil reproducible.
+
+```python
+from sklearn.linear_model import LogisticRegression
+
+logreg_model = LogisticRegression(max_iter=10000, random_state=42)
+logreg_model.fit(X_train, y_train)
+y_pred_logreg = logreg_model.predict(X_test)
+```
+
+#### Model 2: Random Forest Classifier
+
+Model ini dipilih untuk menangkap relasi non-linear dan meningkatkan akurasi.
+
+**Parameter yang digunakan:**
+
+- `n_estimators = 100`: Jumlah pohon dalam hutan.
+- `random_state = 42`: Untuk replikasi hasil.
+- `n_jobs = -1`: Memanfaatkan seluruh core CPU saat pelatihan model.
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
+rf_model.fit(X_train, y_train)
+y_pred_rf = rf_model.predict(X_test)
+```
+
+
+### 3. Kelebihan & Kekurangan Model
+
+| Model               | Kelebihan                                                           | Kekurangan                                  |
+| ------------------- | ------------------------------------------------------------------- | ------------------------------------------- |
+| Logistic Regression | Sederhana, cepat, mudah dipahami                                    | Tidak optimal untuk data non-linear         |
+| Random Forest       | Akurat, tahan terhadap overfitting, mampu menangkap relasi kompleks | Komputasi lebih berat, sulit diinterpretasi |
+
+### 4. Visualisasi Output (Evaluasi Awal)
+
+* **Confusion Matrix Logistic Regression dan Random Forest**
+  ![Confusion Matrix LR](assets/evaluation/confusion.png)
+
+* **Perbandingan Akurasi Model**
+  ![Model Accuracy Comparison](assets/evaluation/barplot.png)
+
+### 5. Pemilihan Model Terbaik
+
+Berdasarkan evaluasi yang dilakukan pada tahap selanjutnya (lihat bagian *Evaluation*), model **Random Forest Classifier** menunjukkan kinerja **lebih unggul** dibanding Logistic Regression dalam hampir semua metrik klasifikasi: akurasi, presisi, recall, dan F1-score.
+
+Meskipun Logistic Regression unggul dalam kesederhanaan dan interpretasi, **Random Forest dipilih sebagai model akhir** karena:
+
+- Lebih akurat pada data ini,
+- Dapat menangani relasi non-linear antar fitur,
+- Lebih tahan terhadap overfitting.
+
+---
+
+
+
 Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
 
 **Rubrik/Kriteria Tambahan (Opsional)**: 
@@ -273,7 +366,184 @@ Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyel
 - Jika menggunakan satu algoritma pada solution statement, lakukan proses improvement terhadap model dengan hyperparameter tuning. **Jelaskan proses improvement yang dilakukan**.
 - Jika menggunakan dua atau lebih algoritma pada solution statement, maka pilih model terbaik sebagai solusi. **Jelaskan mengapa memilih model tersebut sebagai model terbaik**.
 
+---
+
+## Modeling
+
+Tahapan ini membahas proses pemilihan, penerapan, dan konfigurasi algoritma machine learning yang digunakan untuk menyelesaikan permasalahan klasifikasi status kanker paru-paru. Dalam proyek ini digunakan dua model klasifikasi, yaitu **Logistic Regression** sebagai baseline dan **Random Forest Classifier** sebagai model ansambel yang lebih kompleks.
+
+### 1. Pemilihan Model
+
+Model dipilih berdasarkan karakteristik data yang bersifat tabular dan kategorikal, serta kebutuhan untuk mengeksplorasi perbandingan performa antara model sederhana dan model kompleks.
+
+- **Logistic Regression**
+  - Digunakan sebagai baseline model.
+  - Sederhana, cepat, dan interpretatif.
+  - Cocok untuk relasi linier antara fitur dan target.
+
+- **Random Forest Classifier**
+  - Model ansambel berbasis pohon keputusan.
+  - Mampu menangkap pola non-linear.
+  - Tahan terhadap overfitting dan cocok untuk data biner.
+
+---
+
+### 2. Implementasi dan Parameter Model
+
+#### a) Model 1: Logistic Regression
+
+Model ini dipilih sebagai **baseline classifier** karena memiliki karakteristik sebagai berikut:
+- Cocok untuk masalah klasifikasi biner seperti prediksi kanker paru-paru (Yes/No).
+- Cepat dan efisien dalam proses pelatihan.
+- Mudah diinterpretasikan sehingga membantu dalam analisis fitur penting.
+- Sering digunakan sebagai pembanding awal sebelum model yang lebih kompleks.
+  
+```python
+from sklearn.linear_model import LogisticRegression
+
+logreg_model = LogisticRegression(max_iter=10000, random_state=42)
+logreg_model.fit(X_train, y_train)
+y_pred_logreg = logreg_model.predict(X_test)
+```
+
+**Parameter yang digunakan:**
+- `max_iter = 10000`: Untuk memastikan model konvergen saat training.
+- `random_state = 42`: Agar hasil dapat direproduksi.
+
+#### b) Model 2: Random Forest Classifier
+Model ini digunakan untuk mengeksplorasi alternatif dengan **kompleksitas dan performa lebih tinggi**. Random Forest merupakan model ansambel yang mampu:
+
+- Menangkap hubungan non-linear antar fitur.
+- Lebih tahan terhadap overfitting dibanding pohon keputusan tunggal.
+- Memberikan akurasi yang lebih baik pada data klasifikasi tabular dengan fitur biner dan numerik.
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
+rf_model.fit(X_train, y_train)
+y_pred_rf = rf_model.predict(X_test)
+```
+
+**Parameter yang digunakan:**
+- `n_estimators = 100`: Jumlah pohon dalam hutan.
+- `random_state = 42`: Konsistensi hasil training.
+- `n_jobs = -1`: Memaksimalkan penggunaan CPU.
+
+---
+
+### 3. Kelebihan dan Kekurangan Model
+
+| Model               | Kelebihan                                                           | Kekurangan                                  |
+|---------------------|---------------------------------------------------------------------|---------------------------------------------|
+| Logistic Regression | Cepat, efisien, mudah dipahami dan dijadikan baseline              | Kurang fleksibel dalam menangkap pola non-linear |
+| Random Forest       | Akurasi tinggi, tahan overfitting, bisa menangkap relasi kompleks  | Komputasi lebih berat, sulit diinterpretasi |
+
+---
+
+### 4. Pemilihan Model Terbaik
+
+Setelah dilakukan evaluasi pada bagian selanjutnya, diperoleh bahwa **Random Forest Classifier memiliki performa yang lebih tinggi** dibandingkan Logistic Regression pada seluruh metrik evaluasi utama: akurasi, presisi, recall, dan F1-score.
+
+Meskipun Logistic Regression unggul dari segi interpretasi dan efisiensi komputasi, **Random Forest dipilih sebagai model final** dalam proyek ini karena:
+
+- Lebih akurat dalam menangani data dengan hubungan fitur yang kompleks.
+- Mampu mengurangi risiko overfitting.
+- Mampu bekerja optimal tanpa banyak preprocessing atau asumsi data linier.
+
+---
+
+
 ## Evaluation
+
+## Evaluation
+
+Tahapan evaluasi bertujuan untuk menilai performa model klasifikasi yang telah dibangun menggunakan data uji. Empat metrik utama yang digunakan dalam proyek ini adalah **Accuracy**, **Precision**, **Recall**, dan **F1-Score**. Setiap metrik mencerminkan dimensi performa yang berbeda, penting untuk memahami kekuatan dan kelemahan masing-masing model.
+
+### 1. Penjelasan Metrik Evaluasi
+
+| Metrik     | Deskripsi |
+|------------|-----------|
+| **Accuracy** | Proporsi prediksi benar dari seluruh prediksi. |
+| **Precision** | Proporsi prediksi positif yang benar-benar positif. |
+| **Recall** | Proporsi data positif yang berhasil diprediksi dengan benar. |
+| **F1-Score** | Harmonik rata-rata Precision dan Recall, berguna pada data yang tidak seimbang. |
+
+---
+
+### 2. Hasil Evaluasi Model
+
+#### Logistic Regression
+
+```python
+📊 Evaluasi Model Logistic Regression
+Accuracy     : 0.4967
+Precision    : 0.4966
+Recall       : 0.4967
+F1-Score     : 0.4956
+```
+
+#### Random Forest Classifier
+
+```python
+📊 Evaluasi Model Random Forest
+Accuracy     : 0.5367
+Precision    : 0.5367
+Recall       : 0.5367
+F1-Score     : 0.5365
+```
+
+---
+
+### 3. Visualisasi Confusion Matrix
+
+Confusion Matrix Logistic Regression dan Random Forest
+![Confusion Matrix Logistic Regression dan Random Forest](assets/evaluation/confusion.png)
+
+---
+
+### 4. Visualisasi Perbandingan Akurasi
+
+```python
+# Model Accuracy Comparison
+```
+
+![Akurasi Model](assets/evaluation/barplot.png)
+
+---
+
+### 5. Tabel Ringkasan Hasil
+
+| Model                | Accuracy | Precision | Recall | F1-Score |
+|----------------------|----------|-----------|--------|----------|
+| Logistic Regression  | 0.4967   | 0.4966    | 0.4967 | 0.4956   |
+| Random Forest        | 0.5367   | 0.5367    | 0.5367 | 0.5365   |
+
+---
+
+### 6. Analisis dan Kesimpulan
+
+Hasil evaluasi menunjukkan bahwa model **Random Forest Classifier** memberikan performa yang lebih baik dibandingkan **Logistic Regression** pada semua metrik evaluasi. Hal ini konsisten dengan karakteristik model yang mampu menangkap hubungan non-linear dan interaksi antar fitur.
+
+Meskipun demikian, **akurasi kedua model masih di bawah 60%**, yang menunjukkan bahwa prediksi kanker paru-paru berbasis data klinis sederhana memiliki keterbatasan.
+
+**Beberapa penyebab potensial:**
+
+- Tidak dilakukan hyperparameter tuning atau cross-validation.
+- Fitur-fitur yang digunakan bersifat umum dan mungkin kurang informatif untuk deteksi kanker.
+- Distribusi label relatif seimbang namun terdapat noise atau ketidaksesuaian data input.
+
+**Langkah selanjutnya yang direkomendasikan:**
+
+- Melakukan tuning hyperparameter untuk Random Forest.
+- Mencoba metode balancing jika ditemukan distribusi label tidak seimbang.
+- Menambah fitur klinis yang lebih relevan (misalnya hasil CT scan, biomarker, dsb).
+- Mengevaluasi model dengan teknik validasi silang (cross-validation).
+
+---
+
+
+
 Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
 
 Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
