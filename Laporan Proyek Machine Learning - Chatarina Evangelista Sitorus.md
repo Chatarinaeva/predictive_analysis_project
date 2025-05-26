@@ -152,6 +152,113 @@ Selanjutnya uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:
 - Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data atau exploratory data analysis.
 
 ## Data Preparation
+
+Proses *data preparation* dilakukan untuk memastikan bahwa data yang akan digunakan oleh model machine learning bersih, terstruktur, dan dalam format yang sesuai. Tahapan ini mencakup penghapusan data duplikat, encoding fitur kategorikal, remapping nilai biner, standarisasi fitur numerik, serta pembagian data menjadi data latih dan data uji.
+
+### 1. Penghapusan Data Duplikat
+
+Duplikasi data dapat menyebabkan bias dan menurunkan generalisasi model. Oleh karena itu, data duplikat dihapus terlebih dahulu:
+
+```python
+sebelum = df_processed.shape[0]
+df_processed = df_processed.drop_duplicates()
+setelah = df_processed.shape[0]
+print(f"Data duplikat dihapus: {sebelum - setelah} baris.")
+```
+### 2. Remapping Nilai Biner
+
+Beberapa fitur biner awalnya memiliki nilai 1 dan 2. Untuk menyeragamkan dan mempermudah proses pelatihan model, nilai-nilai tersebut diubah menjadi 0 dan 1.
+
+```python
+kolom_biner = [
+    'SMOKING', 'YELLOW_FINGERS', 'ANXIETY', 'PEER_PRESSURE',
+    'CHRONIC_DISEASE', 'FATIGUE', 'ALLERGY', 'WHEEZING',
+    'ALCOHOL_CONSUMING', 'COUGHING', 'SHORTNESS_OF_BREATH',
+    'SWALLOWING_DIFFICULTY', 'CHEST_PAIN'
+]
+
+df_processed[kolom_biner] = df_processed[kolom_biner].replace({1: 0, 2: 1})
+```
+### 3. Encoding Fitur Kategorikal
+
+Fitur GENDER dan LUNG_CANCER adalah data kategorikal dengan nilai string, yang tidak dapat langsung digunakan dalam model. Oleh karena itu, dilakukan proses encoding menggunakan LabelEncoder.
+
+```python
+encoder = LabelEncoder()
+for fitur in ['GENDER', 'LUNG_CANCER']:
+    df_processed[fitur] = encoder.fit_transform(df_processed[fitur])
+```
+Nilai 'F' dan 'NO' akan dikodekan sebagai 0, sedangkan 'M' dan 'YES' sebagai 1.
+
+### 4. Splitting Data (Train-Test Split)
+
+Data kemudian dibagi menjadi dua bagian: data latih (80%) dan data uji (20%) untuk menghindari overfitting dan memungkinkan evaluasi yang objektif.
+
+
+```python
+X = df_processed.drop("LUNG_CANCER", axis=1)
+y = df_processed["LUNG_CANCER"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+```
+### 5. Standarisasi Fitur Numerik (AGE)
+
+Karena AGE adalah satu-satunya fitur numerik kontinu, maka dilakukan standarisasi menggunakan StandardScaler agar skala nilainya setara dengan fitur lain (yang berupa biner 0/1).
+
+```python
+scaler = StandardScaler()
+X_train["AGE"] = scaler.fit_transform(X_train[["AGE"]])
+X_test["AGE"] = scaler.transform(X_test[["AGE"]])
+
+```
+### 6. Visualisasi Setelah Preprocessing
+* Heatmap Korelasi (Setelah Preprocessing)
+```python
+sns.heatmap(df_processed.corr(numeric_only=True), annot=True, cmap="plasma")
+```
+
+![Heatmap Akhir](assets/preprocessing/heatmap.png)
+
+* Boxplot AGE
+```python
+sns.boxplot(x=X_train["AGE"])
+```
+
+![Boxplot Akhir](assets/preprocessing/boxplot.png)
+
+* Distribusi Gender & Status Kanker (Encoded)
+```python
+sns.countplot(x="GENDER", data=df_processed)
+sns.countplot(x="LUNG_CANCER", data=df_processed)
+
+```
+
+![Countplot Akhir](assets/preprocessing/countplot.png)  
+
+* Distribusi AGE Setelah Standarisasi
+
+```python
+sns.histplot(data=X_train, x="AGE", kde=True, bins=20, color="#4C72B0")
+```
+
+![Histplot Akhir](assets/preprocessing/histplot.png)
+
+### Ringkasan Proses *Data Preparation*
+
+| No | Tahapan                   | Keterangan                                                                                    |
+|----|----------------------------|-----------------------------------------------------------------------------------------------|
+| 1  | Penghapusan Duplikasi      | Menghapus 2 data duplikat dari dataset untuk menghindari bias pada pelatihan model.           |
+| 2  | Remapping Nilai Biner      | Fitur biner yang awalnya bernilai 1 dan 2 dikonversi menjadi 0 dan 1 untuk konsistensi format.|
+| 3  | Encoding Kategorikal       | Fitur `GENDER` dan `LUNG_CANCER` diubah menjadi angka menggunakan `LabelEncoder`.             |
+| 4  | Train-Test Split           | Dataset dibagi menjadi 80% data latih dan 20% data uji agar evaluasi model lebih objektif.   |
+| 5  | Standarisasi Numerik       | Fitur `AGE` distandarisasi menggunakan `StandardScaler` agar setara dengan fitur lain.        |
+| 6  | Visualisasi Preprocessing  | Visualisasi hasil preprocessing seperti heatmap, boxplot, countplot, dan distribusi usia.     |
+
+
+***
+
 Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
 
 **Rubrik/Kriteria Tambahan (Opsional)**: 
