@@ -16,44 +16,37 @@ Sementara itu, **Gould et al. (2022)** menekankan bahwa data klinis rutin sepert
 - Patra, R. (2020). Prediction of lung cancer using machine learning classifier. In S. C. Satapathy, V. Bhateja, & S. Das (Eds.), *Data management, analytics and innovation* (pp. 107–120). Springer. https://doi.org/10.1007/978-981-15-6648-6_11  
 - Gould, M. K., Huang, B. Z., Tammemagi, M. C., Kinar, Y., & Shiff, R. (2022). Machine learning for early lung cancer identification using routine clinical and laboratory data. *American Journal of Respiratory and Critical Care Medicine, 205*(3), 350–352. https://doi.org/10.1164/rccm.202007-2791OC
 
-
-
-Pada bagian ini, kamu perlu menuliskan latar belakang yang relevan dengan proyek yang diangkat.
-
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Jelaskan mengapa dan bagaimana masalah tersebut harus diselesaikan
-- Menyertakan hasil riset terkait atau referensi. Referensi yang diberikan harus berasal dari sumber yang kredibel dan author yang jelas.
-- Format Referensi dapat mengacu pada penulisan sitasi [IEEE](https://journals.ieeeauthorcenter.ieee.org/wp-content/uploads/sites/7/IEEE_Reference_Guide.pdf), [APA](https://www.mendeley.com/guides/apa-citation-guide/) atau secara umum seperti [di sini](https://penerbitdeepublish.com/menulis-buku-membuat-sitasi-dengan-mudah/)
-- Sumber yang bisa digunakan [Scholar](https://scholar.google.com/)
-
 ## Business Understanding
 
-Pada bagian ini, kamu perlu menjelaskan proses klarifikasi masalah.
+Dalam upaya mendukung deteksi dini kanker paru-paru, proyek ini berfokus pada pengembangan sistem klasifikasi berbasis machine learning (ML) yang menggunakan data klinis non-invasif sebagai sumber utama informasi. ML dipilih karena kemampuannya dalam mengenali pola tersembunyi dari data sederhana seperti usia, kebiasaan merokok, dan gejala awal pasien, tanpa perlu bergantung pada metode diagnostik invasif atau mahal.
 
-Bagian laporan ini mencakup:
+Berdasarkan latar belakang tersebut, maka proses klarifikasi masalah dan tujuan yang ingin dicapai dalam studi ini dirumuskan sebagai berikut:
 
 ### Problem Statements
 
-Menjelaskan pernyataan masalah latar belakang:
-- Pernyataan Masalah 1
-- Pernyataan Masalah 2
-- Pernyataan Masalah n
+1. Kanker paru-paru sering kali terdiagnosis pada stadium lanjut karena gejala awalnya tidak spesifik dan sulit dikenali.
+2. Deteksi awal memerlukan pemeriksaan mahal dan invasif seperti CT-scan dan biopsi yang belum dapat diakses semua fasilitas kesehatan.
+3. Belum tersedia sistem berbasis data klinis sederhana yang mampu mengidentifikasi risiko kanker paru secara cepat dan efektif.
+4. Diperlukan pendekatan prediktif menggunakan machine learning untuk membangun model klasifikasi risiko kanker paru yang dapat diandalkan.
 
 ### Goals
 
-Menjelaskan tujuan dari pernyataan masalah:
-- Jawaban pernyataan masalah 1
-- Jawaban pernyataan masalah 2
-- Jawaban pernyataan masalah n
+Dengan memanfaatkan machine learning, studi ini bertujuan untuk:
 
-Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
+1. Membangun model klasifikasi yang mampu memprediksi status kanker paru-paru berdasarkan fitur-fitur klinis dasar.
+2. Membandingkan performa dua algoritma yaitu Logistic Regression dan Random Forest Classifier sebagai alternatif solusi.
+3. Memberikan dasar teknis dalam pengembangan sistem skrining awal kanker paru-paru berbasis data terbuka yang hemat biaya dan informatif.
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Menambahkan bagian “Solution Statement” yang menguraikan cara untuk meraih goals. Bagian ini dibuat dengan ketentuan sebagai berikut: 
+### Solution statements
 
-    ### Solution statements
-    - Mengajukan 2 atau lebih solution statement. Misalnya, menggunakan dua atau lebih algoritma untuk mencapai solusi yang diinginkan atau melakukan improvement pada baseline model dengan hyperparameter tuning.
-    - Solusi yang diberikan harus dapat terukur dengan metrik evaluasi.
+- **Model 1: Logistic Regression**  
+  Dipilih sebagai baseline model karena sifatnya yang cepat, sederhana, serta mudah diinterpretasikan. Cocok sebagai titik awal untuk evaluasi klasifikasi biner.
+
+- **Model 2: Random Forest Classifier**  
+  Merupakan model ansambel berbasis decision tree yang lebih kompleks dan mampu menangkap hubungan non-linear. Model ini juga relatif tahan terhadap overfitting.
+
+Evaluasi kinerja model dilakukan dengan menggunakan metrik klasifikasi yang relevan: **Accuracy**, **Precision**, **Recall**, dan **F1-Score**. Visualisasi seperti confusion matrix dan grafik perbandingan juga digunakan untuk memberikan insight tambahan dalam pemilihan model terbaik.
+
 
 ## Data Understanding
 Paragraf awal bagian ini menjelaskan informasi mengenai data yang Anda gunakan dalam proyek. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
