@@ -94,14 +94,37 @@ Artinya terdapat **3000 baris** (pasien) dan **16 kolom**, termasuk variabel tar
 
 Beberapa tahapan awal eksplorasi data dilakukan untuk memahami karakteristik dataset:
 
-#### 1. Pemeriksaan Unik dan Duplikasi
-
+#### 1. Pemeriksaan Nilai Unik dan Duplikasi
+Pemeriksaan nilai unik
 ```python
 df_lung.nunique()
+```
+```python
+Hasil:
+Jumlah nilai unik di setiap kolom:
+GENDER                    2
+AGE                      51
+SMOKING                   2
+YELLOW_FINGERS            2
+ANXIETY                   2
+PEER_PRESSURE             2
+CHRONIC_DISEASE           2
+FATIGUE                   2
+ALLERGY                   2
+WHEEZING                  2
+ALCOHOL_CONSUMING         2
+COUGHING                  2
+SHORTNESS_OF_BREATH       2
+SWALLOWING_DIFFICULTY     2
+CHEST_PAIN                2
+LUNG_CANCER               2
+dtype: int64
+```
+Pemeriksaan duplikasi
+```python
 df_lung.duplicated().sum()
 ```
-
-Hasil menunjukkan tidak ada nilai kosong dan hanya terdapat **2 data duplikat** yang dapat dihapus.
+Hasil: menunjukkan hanya terdapat **2 data duplikat** yang dapat dihapus.
 
 #### 2. Pemeriksaan Struktur dan Tipe Data
 Struktur data diperiksa menggunakan fungsi df.info() untuk melihat jumlah kolom, jumlah nilai non-null, serta tipe data masing-masing fitur.
