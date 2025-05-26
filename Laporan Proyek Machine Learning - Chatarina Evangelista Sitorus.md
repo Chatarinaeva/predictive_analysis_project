@@ -258,114 +258,6 @@ sns.histplot(data=X_train, x="AGE", kde=True, bins=20, color="#4C72B0")
 | 6  | Visualisasi Preprocessing  | Visualisasi hasil preprocessing seperti heatmap, boxplot, countplot, dan distribusi usia.     |
 
 
-***
-
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
-
-## Modeling
-
-Tahapan ini membahas pemilihan dan penerapan model machine learning untuk klasifikasi status kanker paru-paru berdasarkan data klinis yang telah diproses sebelumnya. Dua algoritma klasifikasi digunakan untuk dibandingkan performanya: **Logistic Regression** dan **Random Forest Classifier**.
-
-### 1. Pemilihan Model
-
-Dua model dipilih berdasarkan karakteristik data dan kebutuhan proyek:
-
-* **Logistic Regression**
-
-  * Digunakan sebagai baseline model.
-  * Sifatnya sederhana, cepat, dan mudah diinterpretasikan.
-  * Cocok digunakan ketika hubungan antar fitur dan target bersifat linier.
-
-* **Random Forest Classifier**
-
-  * Algoritma ansambel berbasis pohon keputusan.
-  * Dapat menangkap hubungan non-linear antar fitur.
-  * Lebih kuat terhadap overfitting dan bekerja baik pada data biner.
-
-Tujuan dari penggunaan dua model ini adalah untuk membandingkan trade-off antara **kecepatan, interpretabilitas, dan akurasi**.
-
-### 2. Implementasi Model dan Parameter
-
-#### Model 1: Logistic Regression
-
-Model ini dipilih sebagai baseline karena:
-
-- Cocok untuk klasifikasi biner.
-- Cepat dilatih dan efisien secara komputasi.
-- Memiliki interpretabilitas tinggi.
-
-**Parameter yang digunakan:**
-
-- `max_iter = 10000`: Untuk memastikan konvergensi saat proses training.
-- `random_state = 42`: Agar hasil reproducible.
-
-```python
-from sklearn.linear_model import LogisticRegression
-
-logreg_model = LogisticRegression(max_iter=10000, random_state=42)
-logreg_model.fit(X_train, y_train)
-y_pred_logreg = logreg_model.predict(X_test)
-```
-
-#### Model 2: Random Forest Classifier
-
-Model ini dipilih untuk menangkap relasi non-linear dan meningkatkan akurasi.
-
-**Parameter yang digunakan:**
-
-- `n_estimators = 100`: Jumlah pohon dalam hutan.
-- `random_state = 42`: Untuk replikasi hasil.
-- `n_jobs = -1`: Memanfaatkan seluruh core CPU saat pelatihan model.
-
-```python
-from sklearn.ensemble import RandomForestClassifier
-
-rf_model = RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
-rf_model.fit(X_train, y_train)
-y_pred_rf = rf_model.predict(X_test)
-```
-
-
-### 3. Kelebihan & Kekurangan Model
-
-| Model               | Kelebihan                                                           | Kekurangan                                  |
-| ------------------- | ------------------------------------------------------------------- | ------------------------------------------- |
-| Logistic Regression | Sederhana, cepat, mudah dipahami                                    | Tidak optimal untuk data non-linear         |
-| Random Forest       | Akurat, tahan terhadap overfitting, mampu menangkap relasi kompleks | Komputasi lebih berat, sulit diinterpretasi |
-
-### 4. Visualisasi Output (Evaluasi Awal)
-
-* **Confusion Matrix Logistic Regression dan Random Forest**
-  ![Confusion Matrix LR](assets/evaluation/confusion.png)
-
-* **Perbandingan Akurasi Model**
-  ![Model Accuracy Comparison](assets/evaluation/barplot.png)
-
-### 5. Pemilihan Model Terbaik
-
-Berdasarkan evaluasi yang dilakukan pada tahap selanjutnya (lihat bagian *Evaluation*), model **Random Forest Classifier** menunjukkan kinerja **lebih unggul** dibanding Logistic Regression dalam hampir semua metrik klasifikasi: akurasi, presisi, recall, dan F1-score.
-
-Meskipun Logistic Regression unggul dalam kesederhanaan dan interpretasi, **Random Forest dipilih sebagai model akhir** karena:
-
-- Lebih akurat pada data ini,
-- Dapat menangani relasi non-linear antar fitur,
-- Lebih tahan terhadap overfitting.
-
----
-
-
-
-Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan kelebihan dan kekurangan dari setiap algoritma yang digunakan.
-- Jika menggunakan satu algoritma pada solution statement, lakukan proses improvement terhadap model dengan hyperparameter tuning. **Jelaskan proses improvement yang dilakukan**.
-- Jika menggunakan dua atau lebih algoritma pada solution statement, maka pilih model terbaik sebagai solusi. **Jelaskan mengapa memilih model tersebut sebagai model terbaik**.
-
 ---
 
 ## Modeling
@@ -386,7 +278,7 @@ Model dipilih berdasarkan karakteristik data yang bersifat tabular dan kategorik
   - Mampu menangkap pola non-linear.
   - Tahan terhadap overfitting dan cocok untuk data biner.
 
----
+
 
 ### 2. Implementasi dan Parameter Model
 
@@ -430,7 +322,6 @@ y_pred_rf = rf_model.predict(X_test)
 - `random_state = 42`: Konsistensi hasil training.
 - `n_jobs = -1`: Memaksimalkan penggunaan CPU.
 
----
 
 ### 3. Kelebihan dan Kekurangan Model
 
@@ -450,11 +341,8 @@ Meskipun Logistic Regression unggul dari segi interpretasi dan efisiensi komputa
 - Lebih akurat dalam menangani data dengan hubungan fitur yang kompleks.
 - Mampu mengurangi risiko overfitting.
 - Mampu bekerja optimal tanpa banyak preprocessing atau asumsi data linier.
-
+- 
 ---
-
-
-## Evaluation
 
 ## Evaluation
 
@@ -469,7 +357,33 @@ Tahapan evaluasi bertujuan untuk menilai performa model klasifikasi yang telah d
 | **Recall** | Proporsi data positif yang berhasil diprediksi dengan benar. |
 | **F1-Score** | Harmonik rata-rata Precision dan Recall, berguna pada data yang tidak seimbang. |
 
----
+### Rumus Metrik Evaluasi
+
+Metrik yang digunakan dalam proyek ini dapat dihitung menggunakan rumus-rumus berikut:
+
+- **Accuracy**  
+  Mengukur proporsi prediksi yang benar terhadap seluruh prediksi.  
+  `Accuracy = (TP + TN) / (TP + TN + FP + FN)`
+
+- **Precision**  
+  Mengukur ketepatan prediksi kelas positif.  
+  `Precision = TP / (TP + FP)`
+
+- **Recall (Sensitivity)**  
+  Mengukur seberapa banyak kelas positif yang berhasil terdeteksi.  
+  `Recall = TP / (TP + FN)`
+
+- **F1-Score**  
+  Rata-rata harmonik dari Precision dan Recall. Cocok digunakan jika data tidak seimbang.  
+  `F1-Score = 2 * (Precision * Recall) / (Precision + Recall)`
+
+#### Keterangan:
+- **TP**: True Positive  
+- **TN**: True Negative  
+- **FP**: False Positive  
+- **FN**: False Negative
+
+
 
 ### 2. Hasil Evaluasi Model
 
@@ -493,24 +407,20 @@ Recall       : 0.5367
 F1-Score     : 0.5365
 ```
 
----
+
 
 ### 3. Visualisasi Confusion Matrix
 
 Confusion Matrix Logistic Regression dan Random Forest
 ![Confusion Matrix Logistic Regression dan Random Forest](assets/evaluation/confusion.png)
 
----
+
 
 ### 4. Visualisasi Perbandingan Akurasi
 
-```python
-# Model Accuracy Comparison
-```
-
 ![Akurasi Model](assets/evaluation/barplot.png)
 
----
+
 
 ### 5. Tabel Ringkasan Hasil
 
@@ -519,7 +429,7 @@ Confusion Matrix Logistic Regression dan Random Forest
 | Logistic Regression  | 0.4967   | 0.4966    | 0.4967 | 0.4956   |
 | Random Forest        | 0.5367   | 0.5367    | 0.5367 | 0.5365   |
 
----
+
 
 ### 6. Analisis dan Kesimpulan
 
@@ -540,24 +450,5 @@ Meskipun demikian, **akurasi kedua model masih di bawah 60%**, yang menunjukkan 
 - Menambah fitur klinis yang lebih relevan (misalnya hasil CT scan, biomarker, dsb).
 - Mengevaluasi model dengan teknik validasi silang (cross-validation).
 
----
 
-
-
-Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
-
-Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
-- Penjelasan mengenai metrik yang digunakan
-- Menjelaskan hasil proyek berdasarkan metrik evaluasi
-
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
-
-**---Ini adalah bagian akhir laporan---**
-
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
 
