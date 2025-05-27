@@ -504,10 +504,10 @@ Hasil evaluasi menunjukkan bahwa model **Random Forest Classifier** memberikan p
 Meskipun demikian, **akurasi kedua model masih di bawah 60%**, yang menunjukkan bahwa prediksi kanker paru-paru berbasis data klinis sederhana memiliki keterbatasan.
 
 **Beberapa penyebab potensial:**
+- Ketidakseimbangan data atau noise dalam fitur, yang dapat mempersulit model dalam mengenali pola secara konsisten.
+- Kompleksitas alami dari data klinis yang sulit dipetakan secara linier, khususnya oleh model Logistic Regression.
+- Tidak adanya proses tuning atau optimisasi hyperparameter, sehingga model belum mencapai performa optimal.
 
-- Tidak dilakukan hyperparameter tuning atau cross-validation.
-- Fitur-fitur yang digunakan bersifat umum dan mungkin kurang informatif untuk deteksi kanker.
-- Distribusi label relatif seimbang namun terdapat noise atau ketidaksesuaian data input.
 
 **Langkah selanjutnya yang direkomendasikan:**
 
