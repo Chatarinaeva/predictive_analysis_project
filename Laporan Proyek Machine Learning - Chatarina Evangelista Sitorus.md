@@ -343,7 +343,10 @@ Model dipilih berdasarkan karakteristik data yang bersifat tabular dan kategorik
 ### 2. Implementasi dan Parameter Model
 
 #### a) Model 1: Logistic Regression
+**Cara kerja model:**
+Logistic Regression bekerja dengan menghitung kombinasi linier dari fitur-fitur input (menggunakan bobot dan bias), lalu menerapkan fungsi logistik (sigmoid) untuk mengubah hasil tersebut menjadi nilai probabilitas antara 0 dan 1. Probabilitas ini menunjukkan seberapa besar kemungkinan suatu data termasuk dalam kelas positif. Model kemudian membandingkan probabilitas ini dengan ambang batas (umumnya 0.5) untuk menentukan kelas output: 1 jika lebih besar dari 0.5, dan 0 jika sebaliknya. Pendekatan ini sangat cocok untuk klasifikasi biner dan efektif saat hubungan antar fitur bersifat linier terhadap *log-odds* dari target.
 
+**Karakteristik dan alasan pemilihan:**
 Model ini dipilih sebagai **baseline classifier** karena memiliki karakteristik sebagai berikut:
 - Cocok untuk masalah klasifikasi biner seperti prediksi kanker paru-paru (Yes/No).
 - Cepat dan efisien dalam proses pelatihan.
@@ -363,8 +366,11 @@ y_pred_logreg = logreg_model.predict(X_test)
 - `random_state = 42`: Agar hasil dapat direproduksi.
 
 #### b) Model 2: Random Forest Classifier
-Model ini digunakan untuk mengeksplorasi alternatif dengan **kompleksitas dan performa lebih tinggi**. Random Forest merupakan model ansambel yang mampu:
+**Cara kerja model:**
+Random Forest merupakan algoritma ansambel yang terdiri dari sejumlah *decision tree* yang dibangun secara paralel. Setiap *tree* dilatih menggunakan subset acak dari data pelatihan dan subset fitur yang berbeda (disebut *bootstrap sampling* dan *feature bagging*). Saat melakukan prediksi, masing-masing pohon akan memberikan hasil klasifikasinya sendiri, lalu Random Forest mengambil keputusan akhir berdasarkan voting mayoritas dari seluruh pohon. Pendekatan ini memungkinkan Random Forest untuk menangkap pola non-linear dan interaksi kompleks antar fitur, sekaligus mengurangi risiko *overfitting* yang biasa terjadi pada model pohon tunggal.
 
+**Karakteristik dan alasan pemilihan:**
+Model ini digunakan untuk mengeksplorasi alternatif dengan **kompleksitas dan performa lebih tinggi**. Random Forest merupakan model ansambel yang mampu:
 - Menangkap hubungan non-linear antar fitur.
 - Lebih tahan terhadap overfitting dibanding pohon keputusan tunggal.
 - Memberikan akurasi yang lebih baik pada data klasifikasi tabular dengan fitur biner dan numerik.
