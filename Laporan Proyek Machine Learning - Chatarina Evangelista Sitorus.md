@@ -19,24 +19,20 @@ Sementara itu, **Gould et al. (2022)** menekankan bahwa data klinis rutin sepert
 
 ## Business Understanding
 
-Dalam upaya mendukung deteksi dini kanker paru-paru, proyek ini berfokus pada pengembangan sistem klasifikasi berbasis machine learning (ML) yang menggunakan data klinis non-invasif sebagai sumber utama informasi. ML dipilih karena kemampuannya dalam mengenali pola tersembunyi dari data sederhana seperti usia, kebiasaan merokok, dan gejala awal pasien, tanpa perlu bergantung pada metode diagnostik invasif atau mahal.
+Dalam upaya mendukung deteksi dini kanker paru-paru, proyek ini berfokus pada pengembangan sistem klasifikasi berbasis *machine learning* (ML) yang menggunakan data klinis non-invasif sebagai sumber utama informasi. ML dipilih karena kemampuannya dalam mengenali pola tersembunyi dari data sederhana seperti usia, kebiasaan merokok, dan gejala awal pasien, tanpa perlu bergantung pada metode diagnostik invasif atau mahal.
 
 Berdasarkan latar belakang tersebut, maka proses klarifikasi masalah dan tujuan yang ingin dicapai dalam studi ini dirumuskan sebagai berikut:
 
 ### Problem Statements
-
-1. Kanker paru-paru sering kali terdiagnosis pada stadium lanjut karena gejala awalnya tidak spesifik dan sulit dikenali.
-2. Deteksi awal memerlukan pemeriksaan mahal dan invasif seperti CT-scan dan biopsi yang belum dapat diakses semua fasilitas kesehatan.
-3. Belum tersedia sistem berbasis data klinis sederhana yang mampu mengidentifikasi risiko kanker paru secara cepat dan efektif.
-4. Diperlukan pendekatan prediktif menggunakan machine learning untuk membangun model klasifikasi risiko kanker paru yang dapat diandalkan.
+1. Keterlambatan diagnosis kanker paru-paru sering terjadi akibat gejala awal yang tidak spesifik dan sulit dikenali, diperparah oleh keterbatasan akses terhadap metode deteksi dini konvensional yang mahal dan invasif.
+2. Belum tersedianya sistem skrining awal yang cepat, efektif, dan hemat biaya berbasis data klinis non-invasif untuk membantu identifikasi individu berisiko tinggi kanker paru secara luas.
+3. Terdapat kebutuhan untuk mengembangkan dan memvalidasi model prediktif menggunakan machine learning yang andal dan mampu mengklasifikasikan risiko kanker paru berdasarkan data klinis non-invasif, sebagai solusi atas keterbatasan metode deteksi saat ini.
 
 ### Goals
-
 Dengan memanfaatkan machine learning, studi ini bertujuan untuk:
-
-1. Membangun model klasifikasi yang mampu memprediksi status kanker paru-paru berdasarkan fitur-fitur klinis dasar.
-2. Membandingkan performa dua algoritma yaitu Logistic Regression dan Random Forest Classifier sebagai alternatif solusi.
-3. Memberikan dasar teknis dalam pengembangan sistem skrining awal kanker paru-paru berbasis data terbuka yang hemat biaya dan informatif.
+1. Memberikan dasar teknis untuk pengembangan sistem skrining awal kanker paru-paru berbasis data terbuka yang hemat biaya, informatif, dan mudah diakses.
+2. Membangun model klasifikasi yang mampu memprediksi status kanker paru-paru berdasarkan fitur-fitur klinis dasar.
+3. Membandingkan performa dua algoritma (Logistic Regression dan Random Forest Classifier) untuk memilih model klasifikasi yang paling andal dan efektif.
 
 ### Solution statements
 
